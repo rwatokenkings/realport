@@ -1,5 +1,6 @@
 
 
+
 // Data for the investment opportunity
 const investmentData = {
     id: 'sheep-creek-mine',
@@ -323,3 +324,8 @@ function addEventListeners() {
 
 // Initial Render
 document.addEventListener('DOMContentLoaded', render);
+
+// Fix: Make this file a module to prevent global scope conflicts with other scripts (e.g. index.js)
+// This resolves TypeScript errors related to redeclared variables and duplicate function implementations
+// when this file and another global script (like index.js) define the same identifiers.
+export {};
