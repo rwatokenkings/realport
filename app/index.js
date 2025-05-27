@@ -110,7 +110,7 @@ function render() {
         headerTitle.textContent = 'Dashboard';
         contentArea.innerHTML = `
             <div class="dashboard-welcome">
-                <h2>Welcome, Patriot Investor!</h2>
+                <h2>Welcome, Patriotic Investor!</h2>
                 <p>Explore opportunities to invest in America's future.</p>
             </div>
             <div class="featured-investment-card" data-investment-id="${investmentData.id}" role="article" aria-labelledby="featured-title">
