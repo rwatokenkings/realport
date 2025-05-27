@@ -64,7 +64,7 @@ let isModalOpen = false;
 let investmentAmountTokens = 1000; // Default investment amount
 let investmentSuccessMessage = '';
 
-const appRoot = document.getElementById('app') as HTMLElement;
+const appRoot = document.getElementById('app');
 
 function render() {
     if (!appRoot) {
@@ -134,7 +134,8 @@ function render() {
         Object.keys(investmentData.details).forEach((key, index) => {
             const isActive = index === 0;
             tabsHTML += `<button class="tab-button ${isActive ? 'active' : ''}" data-tab="${key.toLowerCase().replace(/\s/g, '-')}">${key}</button>`;
-            const listItems = investmentData.details[key as keyof typeof investmentData.details].map(item => `<li>${item}</li>`).join('');
+            // Accessing details directly using key
+            const listItems = (investmentData.details as any)[key].map((item: string) => `<li>${item}</li>`).join('');
             tabContentsHTML += `
                 <div id="${key.toLowerCase().replace(/\s/g, '-')}" class="tab-content ${isActive ? 'active' : ''}">
                     <ul>${listItems}</ul>
@@ -191,6 +192,7 @@ function render() {
         modalOverlay.querySelector('.modal-confirm-btn')?.addEventListener('click', handleConfirmInvestment);
         const amountInput = modalOverlay.querySelector('#investment-amount') as HTMLInputElement;
         amountInput?.addEventListener('input', (e) => {
+            // FIX: Cast e.target to HTMLInputElement to access 'value'
             investmentAmountTokens = parseInt((e.target as HTMLInputElement).value) || 0;
             const costDisplay = modalOverlay.querySelector('.calculated-cost span');
             if(costDisplay) costDisplay.textContent = `$${investmentAmountTokens * investmentData.tokenPrice}`;
@@ -198,7 +200,10 @@ function render() {
             render(); // Re-render modal part or whole app
         });
         // Prevent closing modal when clicking inside content
-        (modalOverlay.querySelector('.modal-content') as HTMLElement).addEventListener('click', (e) => e.stopPropagation());
+        const modalContentElement = modalOverlay.querySelector('.modal-content');
+        if (modalContentElement) {
+           modalContentElement.addEventListener('click', (e) => e.stopPropagation());
+        }
         // Close modal when clicking on overlay
         modalOverlay.addEventListener('click', closeModal);
     }
@@ -232,15 +237,11 @@ function closeModal() {
 function handleConfirmInvestment() {
     // Simulate investment
     investmentSuccessMessage = `Congratulations! Your investment of ${investmentAmountTokens} tokens in ${investmentData.name} is notionally confirmed for $${investmentAmountTokens * investmentData.tokenPrice}. (This is an MVP demonstration).`;
-    // Re-render to show success message
-    // In a real app, you might close the modal or navigate elsewhere.
-    // For now, just re-render the modal with the message.
     render(); 
-    // setTimeout(closeModal, 5000); // Optionally close modal after a delay
 }
 
 function handleTabClick(e: Event) {
-    const target = e.target as HTMLElement;
+    const target = e.target as HTMLElement; // Cast to HTMLElement for classList and dataset
     if (target.classList.contains('tab-button')) {
         const tabId = target.dataset.tab;
         if (tabId) {
@@ -259,11 +260,13 @@ function handleTabClick(e: Event) {
 
 
 function addEventListeners() {
+    if (!appRoot) return;
+
     // Sidebar navigation
     appRoot.querySelectorAll('.sidebar-nav a[data-view]').forEach(link => {
         link.addEventListener('click', (e) => {
             e.preventDefault();
-            // Fix: Cast link to HTMLElement to access dataset
+            // FIX: Cast e.currentTarget to HTMLElement to access 'dataset'
             const view = (e.currentTarget as HTMLElement).dataset.view;
             if (view && !link.classList.contains('disabled-link')) {
                 navigate(view);
@@ -275,32 +278,34 @@ function addEventListeners() {
     if(sidebarHeaderLink) {
         sidebarHeaderLink.addEventListener('click', (e) => {
             e.preventDefault();
-            // Fix: Cast e.currentTarget to HTMLElement to access dataset
+            // FIX: Cast e.currentTarget to HTMLElement to access 'dataset'
             const view = (e.currentTarget as HTMLElement).dataset.view;
             if (view) navigate(view);
         });
     }
 
 
-    // View Details button on dashboard card
+    // View Details button on dashboard card & card click
     appRoot.querySelectorAll('.featured-investment-card button, .featured-investment-card h3, .featured-investment-card p').forEach(el => {
          el.addEventListener('click', (e) => {
-            const card = (e.currentTarget as HTMLElement).closest('.featured-investment-card');
-            if (card && (card as HTMLElement).dataset.investmentId === investmentData.id) {
+            // FIX: Cast e.currentTarget to Element to access 'closest'
+            const card = (e.currentTarget as Element).closest('.featured-investment-card') as HTMLElement;
+            if (card && card.dataset.investmentId === investmentData.id) {
                  openInvestmentDetail();
             }
         });
     });
-    // Make entire card clickable
     const featuredCard = appRoot.querySelector('.featured-investment-card');
     if(featuredCard) {
         featuredCard.addEventListener('click', (e) => {
-            // Prevent multiple triggers if button inside card is clicked
-            if ((e.target as HTMLElement).tagName.toLowerCase() === 'button') return;
+            // FIX: Cast e.target to Element to access 'tagName'
+            if ((e.target as Element).tagName.toLowerCase() === 'button') return;
+            // FIX: Cast featuredCard to HTMLElement to access 'dataset'
             if ((featuredCard as HTMLElement).dataset.investmentId === investmentData.id) {
                 openInvestmentDetail();
             }
         });
+        // FIX: Cast featuredCard to HTMLElement to access 'style'
         (featuredCard as HTMLElement).style.cursor = 'pointer';
     }
 
