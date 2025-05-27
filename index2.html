@@ -1,202 +1,265 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Corporate Flow Chart</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>RealPort x UCM: MVP Platform Showcase</title>
     <style>
-        /* Custom styles for the LLC boxes */
-        .llc-box {
-            @apply bg-blue-600 text-white p-4 rounded-lg shadow-xl flex flex-col items-center justify-center text-center transition-all duration-300 ease-in-out;
-            min-width: 180px; /* Minimum width for readability */
-            min-height: 100px; /* Minimum height */
-            margin: 1rem; /* Spacing between boxes */
-            position: relative; /* Needed for positioning relative to the container for line calculations */
-            font-family: 'Inter', sans-serif; /* Consistent font */
-        }
-
-        .llc-box h3 {
-            @apply font-bold text-lg mb-1;
-        }
-
-        .llc-box p {
-            @apply text-sm opacity-90;
-        }
-
-        /* Specific colors for different levels */
-        #apex-holdings { @apply bg-blue-700; }
-        .operational-llc { @apply bg-green-600; }
-        .asset-llc { @apply bg-purple-600; }
-        #hr-it-services { @apply bg-yellow-600; }
-
-        /* General container styling for centering and responsiveness */
         body {
-            @apply bg-gray-100 flex items-center justify-center min-h-screen p-4;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f7f9;
+            color: #333;
         }
 
-        #chart-container {
-            @apply relative w-full max-w-6xl mx-auto flex flex-col items-center justify-center;
+        .container {
+            width: 90%;
+            max-width: 1000px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
         }
 
-        /* SVG styling for lines */
-        #flowChartLines {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0; /* Ensure lines are behind boxes */
+        header {
+            text-align: center;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #0056b3; /* Patriotic blue */
+            margin-bottom: 30px;
+        }
+
+        header h1 {
+            color: #003366; /* Darker patriotic blue */
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            color: #555;
+            font-size: 1.1em;
+        }
+
+        section {
+            margin-bottom: 40px;
+            padding: 25px;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            background-color: #fdfdfd;
+        }
+
+        section h2 {
+            color: #0056b3;
+            border-bottom: 1px solid #007bff30;
+            padding-bottom: 10px;
+            margin-top: 0;
+            font-size: 1.8em;
+        }
+
+        section h3 {
+            color: #004085; /* Slightly lighter blue */
+            font-size: 1.4em;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        ul li {
+            background-color: #e9f5ff;
+            padding: 12px 15px;
+            margin-bottom: 8px;
+            border-radius: 4px;
+            border-left: 4px solid #007bff; /* Accent blue */
+            font-size: 0.95em;
+        }
+        
+        ul.perks li {
+             background-color: #e6f7e9; /* Greenish for perks */
+             border-left-color: #28a745; /* Green accent */
+        }
+
+        .highlight {
+            color: #b28a00; /* Gold accent */
+            font-weight: bold;
+        }
+        
+        .icon {
+            margin-right: 8px;
+            font-size: 1.1em;
+        }
+
+        .columns {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .column {
+            flex: 1;
+            min-width: 280px;
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 5px;
+        }
+        
+        .column h4 {
+            margin-top:0;
+            color: #0056b3;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 30px;
+            font-size: 0.9em;
+            color: #777;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        /* Accessibility */
+        [aria-current="page"] {
+          font-weight: bold;
+          /* Add other styling for current page link if part of navigation */
         }
     </style>
 </head>
 <body>
-    <div id="chart-container">
-        <svg id="flowChartLines"></svg>
+    <div class="container" role="main">
+        <header role="banner">
+            <h1>RealPort x UCM: MVP Platform Showcase</h1>
+            <p>Investing in America's Future: Critical Mineral Production & Innovative Technology</p>
+        </header>
 
-        <div id="apex-holdings" class="llc-box">
-            <h3>Apex Holdings LLC</h3>
-            <p>Overall Strategic Direction</p>
-        </div>
+        <section id="opportunity" aria-labelledby="opportunity-heading">
+            <h2 id="opportunity-heading"><span class="icon">⭐</span>Investment Opportunity Showcase</h2>
+            <h3>Sheep Creek Mine: A National Asset</h3>
+            <ul>
+                <li>Significance: A high-grade rare earth project vital for U.S. interests.</li>
+                <li>Unique Resource: The only economically viable domestic source of gallium.</li>
+            </ul>
+            <h3>RealPort & UCM: A Strategic Alliance</h3>
+            <ul>
+                <li>Mission: Connecting patriotic investors with critical mineral production using innovative technology.</li>
+                <li>Partnership: A collaborative effort to bolster domestic supply chains.</li>
+            </ul>
+            <h3>UCM's Unique Position</h3>
+            <ul>
+                <li>Support: Backed by political support, national security interests, and growing media attention.</li>
+                <li>Innovation: Pioneering clean extraction technology in collaboration with Idaho National Laboratory (INL).</li>
+            </ul>
+        </section>
 
-        <div class="flex flex-col md:flex-row justify-center items-stretch mt-8 md:mt-16 w-full">
-            <div id="core-operations" class="llc-box operational-llc flex-1">
-                <h3>Core Operations LLC</h3>
-                <p>Primary Business Activities</p>
-            </div>
-            <div id="marketing-sales" class="llc-box operational-llc flex-1">
-                <h3>Marketing & Sales LLC</h3>
-                <p>Marketing & Sales Campaigns</p>
-            </div>
-            <div id="research-development" class="llc-box operational-llc flex-1">
-                <h3>Research & Development LLC</h3>
-                <p>New Product Innovation</p>
-            </div>
-        </div>
+        <section id="fractional-ownership" aria-labelledby="fractional-ownership-heading">
+            <h2 id="fractional-ownership-heading"><span class="icon">🧩</span>Fractional Ownership Explanation</h2>
+            <p>RealPort democratizes investment in large-scale mining assets through tokenization.</p>
+            <ul>
+                <li>Process: For example, a <span class="highlight">$20M mineral deal</span> can be represented by <span class="highlight">20 million tokens</span>.</li>
+                <li>Ownership: Each token signifies legally-binding, transparent ownership in the underlying asset.</li>
+                <li>Accessibility: Begin investing with as little as <span class="highlight">$1,000</span>, making it accessible to everyday Americans.</li>
+            </ul>
+        </section>
 
-        <div class="flex flex-col md:flex-row justify-center items-stretch mt-8 md:mt-16 w-full">
-            <div id="property-management" class="llc-box asset-llc flex-1">
-                <h3>Property Management LLC</h3>
-                <p>Real Estate Assets</p>
+        <section id="token-features" aria-labelledby="token-features-heading">
+            <h2 id="token-features-heading"><span class="icon">🪙</span>Token Features & Benefits</h2>
+            <div class="columns">
+                <div class="column">
+                    <h4>Tradable Digital Asset</h4>
+                    <ul>
+                        <li>Trackable: A digital asset that can be easily tracked.</li>
+                        <li>Potential Liquidity: Future capability to be traded on approved secondary markets.</li>
+                    </ul>
+                </div>
+                <div class="column">
+                    <h4>Trump Coin Option</h4>
+                    <ul>
+                        <li>Purpose-Driven: Utilize cryptocurrency for purpose-driven investing, aligning with specific values.</li>
+                    </ul>
+                </div>
+                <div class="column">
+                    <h4>Real-World Perks</h4>
+                    <ul class="perks">
+                        <li>Exclusive Access: Gallium samples, mine tours.</li>
+                        <li>Collectibles: Unique collectibles and signed gear for token holders.</li>
+                    </ul>
+                </div>
             </div>
-            <div id="intellectual-property" class="llc-box asset-llc flex-1">
-                <h3>Intellectual Property LLC</h3>
-                <p>Patents, Trademarks, Copyrights</p>
-            </div>
-        </div>
+        </section>
 
-        <div class="flex justify-center mt-8 md:mt-16 w-full">
-            <div id="hr-it-services" class="llc-box flex-none">
-                <h3>HR & IT Services LLC</h3>
-                <p>Centralized HR & IT</p>
+        <section id="reg-a-compliance" aria-labelledby="reg-a-compliance-heading">
+            <h2 id="reg-a-compliance-heading"><span class="icon">⚖️</span>Reg A+ Compliance Information</h2>
+            <p>Invest with confidence through our robust and transparent Reg A+ structure.</p>
+            <ul>
+                <li>Mini-IPO Model: Allows investment from everyday people, not just accredited wealthy investors.</li>
+                <li>Funding Potential: Capable of raising up to <span class="highlight">$75M per year</span>.</li>
+                <li>SEC Reviewed: Fully legal framework, offering a light version of going public.</li>
+                <li>Direct Investment: Qualifies as an operating company, avoiding complex investment company burdens.</li>
+            </ul>
+        </section>
+
+        <section id="spv-structure" aria-labelledby="spv-structure-heading">
+            <h2 id="spv-structure-heading"><span class="icon">🧱</span>SPV LLC Structure</h2>
+            <p>A clear and dedicated structure for managing investments and operations.</p>
+            <ul>
+                <li>Jointly Owned: A Special Purpose Vehicle (SPV) LLC, with both RealPort and USCM on the cap table.</li>
+                <li>Reg A+ Filer: The SPV acts as the official filer for the Reg A+ offering.</li>
+                <li>Targeted Funds: All investment funds are <span class="highlight">strictly dedicated</span> to the operations of the Sheep Creek mining project.</li>
+                <li>Unique Model: Creates a unique and transparent operating model for the project.</li>
+            </ul>
+        </section>
+
+        <section id="secondary-market" aria-labelledby="secondary-market-heading">
+            <h2 id="secondary-market-heading"><span class="icon">🔄</span>Potential Secondary Market (ATS)</h2>
+            <p>Exploring future liquidity options for token holders.</p>
+            <ul>
+                <li>ATS Partnership: Potential for token holders to trade on a partner Alternative Trading System (e.g., tZERO). RealPort may earn 1.5%-3.0% of transaction fees through referral/licensing.</li>
+                <li>Increased Flexibility: Offers a pathway for secondary market access.</li>
+                <li>Exit Opportunities: Future possibilities include buyback programs and flexible early exit options.</li>
+            </ul>
+        </section>
+
+        <section id="timeline-cost" aria-labelledby="timeline-cost-heading">
+            <h2 id="timeline-cost-heading"><span class="icon">🗓️</span>Timeline and Cost Overview</h2>
+            <div class="columns">
+                <div class="column">
+                    <h4>Projected Timeline</h4>
+                    <ul>
+                        <li>Launch Window: <span class="highlight">90-120 days</span> to go live.</li>
+                    </ul>
+                </div>
+                <div class="column">
+                    <h4>Estimated Launch Costs</h4>
+                    <ul>
+                        <li>Total Budget: Approximately <span class="highlight">$175K - $250K</span>.</li>
+                    </ul>
+                </div>
             </div>
-        </div>
+            <h3>Key Phases:</h3>
+            <ul>
+                <li>Phase 1: Legal Setup for SPV (3-4 months) - SPV formation, cap table setup, Reg A+ filing (<span class="highlight">$75K-$125K</span>).</li>
+                <li>Phase 2: Media Campaign (1 month) - Media, influencer, and Trump Coin community campaign (<span class="highlight">$100K-$125K</span>).</li>
+            </ul>
+        </section>
+
+        <section id="partnership-framework" aria-labelledby="partnership-framework-heading">
+            <h2 id="partnership-framework-heading"><span class="icon">🤝</span>Partnership Framework</h2>
+            <p>A mutually beneficial structure designed for shared success.</p>
+            <ul>
+                <li>USCM Benefits: Receives <span class="highlight">5% equity in RealPort</span> and <span class="highlight">40% of all RealPort revenue</span> tied to the Sheep Creek project.</li>
+                <li>RealPort Growth: Receives an equity option in USCM at a <span class="highlight">$25M valuation</span>.</li>
+                <li>Mutual Advantages: Both parties benefit from enhanced platform credibility, wider media reach, and value alignment, including through Trump Coin integration.</li>
+                <li>National Impact: Partnership allows joint ownership of one of the first tokenized national security-grade projects in the U.S.</li>
+            </ul>
+        </section>
+
+        <footer>
+            <p>&copy; 2024 RealPort & UCM Initiative - MVP Showcase. For discussion purposes only.</p>
+        </footer>
     </div>
-
-    <script>
-        // Function to draw lines between the LLC boxes
-        function drawLines() {
-            const svg = document.getElementById('flowChartLines');
-            if (!svg) {
-                console.error("SVG element not found.");
-                return;
-            }
-
-            // Clear any existing lines before redrawing
-            while (svg.firstChild) {
-                svg.removeChild(svg.firstChild);
-            }
-
-            const chartContainer = document.getElementById('chart-container');
-            if (!chartContainer) {
-                console.error("Chart container not found.");
-                return;
-            }
-
-            // Get the bounding rectangle of the chart container to calculate relative positions
-            const containerRect = chartContainer.getBoundingClientRect();
-
-            // Helper function to get the center point of the bottom edge of an element
-            const getBoxBottomCenter = (id) => {
-                const element = document.getElementById(id);
-                if (!element) return null;
-                const rect = element.getBoundingClientRect();
-                return {
-                    x: rect.left + rect.width / 2 - containerRect.left,
-                    y: rect.bottom - containerRect.top
-                };
-            };
-
-            // Helper function to get the center point of the top edge of an element
-            const getBoxTopCenter = (id) => {
-                const element = document.getElementById(id);
-                if (!element) return null;
-                const rect = element.getBoundingClientRect();
-                return {
-                    x: rect.left + rect.width / 2 - containerRect.left,
-                    y: rect.top - containerRect.top
-                };
-            };
-
-            // Helper function to create and append an SVG line
-            const createLine = (startX, startY, endX, endY, color = '#3B82F6', strokeWidth = 2) => {
-                const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-                line.setAttribute('x1', startX);
-                line.setAttribute('y1', startY);
-                line.setAttribute('x2', endX);
-                line.setAttribute('y2', endY);
-                line.setAttribute('stroke', color);
-                line.setAttribute('stroke-width', strokeWidth);
-                line.setAttribute('marker-end', 'url(#arrowhead)'); // Add arrowhead marker
-                svg.appendChild(line);
-            };
-
-            // Define SVG arrowhead marker
-            const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
-            const marker = document.createElementNS('http://www.w3.org/2000/svg', 'marker');
-            marker.setAttribute('id', 'arrowhead');
-            marker.setAttribute('markerWidth', '10');
-            marker.setAttribute('markerHeight', '7');
-            marker.setAttribute('refX', '0');
-            marker.setAttribute('refY', '3.5');
-            marker.setAttribute('orient', 'auto');
-            const polygon = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
-            polygon.setAttribute('points', '0 0, 10 3.5, 0 7');
-            polygon.setAttribute('fill', '#3B82F6');
-            marker.appendChild(polygon);
-            defs.appendChild(marker);
-            svg.appendChild(defs);
-
-            // Get positions of all relevant boxes
-            const apex = getBoxBottomCenter('apex-holdings');
-            const coreOps = getBoxTopCenter('core-operations');
-            const marketing = getBoxTopCenter('marketing-sales');
-            const research = getBoxTopCenter('research-development');
-            const property = getBoxTopCenter('property-management');
-            const ip = getBoxTopCenter('intellectual-property');
-            const hrIt = getBoxTopCenter('hr-it-services');
-
-            // Draw lines from Apex Holdings to all direct subsidiaries
-            if (apex) {
-                if (coreOps) createLine(apex.x, apex.y, coreOps.x, coreOps.y);
-                if (marketing) createLine(apex.x, apex.y, marketing.x, marketing.y);
-                if (research) createLine(apex.x, apex.y, research.x, research.y);
-                if (property) createLine(apex.x, apex.y, property.x, property.y);
-                if (ip) createLine(apex.x, apex.y, ip.x, ip.y);
-                if (hrIt) createLine(apex.x, apex.y, hrIt.x, hrIt.y);
-            }
-        }
-
-        // Call drawLines when the window loads and on resize to ensure lines are correctly positioned
-        window.addEventListener('load', () => {
-            // A small delay to ensure all elements are rendered and their positions are stable
-            setTimeout(drawLines, 50);
-        });
-        window.addEventListener('resize', () => {
-            // Re-draw lines on window resize to adjust to new element positions
-            drawLines();
-        });
-    </script>
 </body>
 </html>
-
