@@ -1,6 +1,4 @@
 
-
-
 // Data for the investment opportunity
 const investmentData = {
     id: 'sheep-creek-mine',
@@ -65,11 +63,10 @@ let isModalOpen = false;
 let investmentAmountTokens = 1000; // Default investment amount
 let investmentSuccessMessage = '';
 
-const appRoot = document.getElementById('app');
-
 function render() {
+    const appRoot = document.getElementById('app');
     if (!appRoot) {
-        console.error('App root not found');
+        console.error('App root not found during render. Halting.');
         return;
     }
     appRoot.innerHTML = ''; // Clear previous content
@@ -103,7 +100,7 @@ function render() {
     const headerTitle = document.createElement('h1');
     contentHeader.appendChild(headerTitle);
     mainContent.appendChild(contentHeader);
-    
+
     const contentArea = document.createElement('div');
     contentArea.className = 'content-area';
     mainContent.appendChild(contentArea);
@@ -131,12 +128,11 @@ function render() {
         headerTitle.textContent = investmentData.name;
         let tabsHTML = '';
         let tabContentsHTML = '';
-        
+
         Object.keys(investmentData.details).forEach((key, index) => {
             const isActive = index === 0;
             tabsHTML += `<button class="tab-button ${isActive ? 'active' : ''}" data-tab="${key.toLowerCase().replace(/\s/g, '-')}">${key}</button>`;
-            // Accessing details directly using key
-            const listItems = (investmentData.details as any)[key].map((item: string) => `<li>${item}</li>`).join('');
+            const listItems = investmentData.details[key].map((item) => `<li>${item}</li>`).join('');
             tabContentsHTML += `
                 <div id="${key.toLowerCase().replace(/\s/g, '-')}" class="tab-content ${isActive ? 'active' : ''}">
                     <ul>${listItems}</ul>
@@ -163,7 +159,7 @@ function render() {
         modalOverlay.setAttribute('role', 'dialog');
         modalOverlay.setAttribute('aria-modal', 'true');
         modalOverlay.setAttribute('aria-labelledby', 'modal-title');
-        
+
         modalOverlay.innerHTML = `
             <div class="modal-content">
                 <div class="modal-header">
@@ -187,33 +183,35 @@ function render() {
         `;
         appRoot.appendChild(modalOverlay);
 
-        // Modal event listeners
         modalOverlay.querySelector('.modal-close-btn')?.addEventListener('click', closeModal);
         modalOverlay.querySelector('.modal-cancel-btn')?.addEventListener('click', closeModal);
         modalOverlay.querySelector('.modal-confirm-btn')?.addEventListener('click', handleConfirmInvestment);
-        const amountInput = modalOverlay.querySelector('#investment-amount') as HTMLInputElement;
+        const amountInput = modalOverlay.querySelector('#investment-amount');
         amountInput?.addEventListener('input', (e) => {
-            // FIX: Cast e.target to HTMLInputElement to access 'value'
-            investmentAmountTokens = parseInt((e.target as HTMLInputElement).value) || 0;
-            const costDisplay = modalOverlay.querySelector('.calculated-cost span');
-            if(costDisplay) costDisplay.textContent = `$${investmentAmountTokens * investmentData.tokenPrice}`;
-            investmentSuccessMessage = ''; // Clear success message on input change
-            render(); // Re-render modal part or whole app
+            console.log('Modal input event:', e);
+            console.log('Modal input e.target:', e.target);
+            if (e.target && typeof e.target.value !== 'undefined') {
+                investmentAmountTokens = parseInt(e.target.value) || 0;
+                const costDisplay = modalOverlay.querySelector('.calculated-cost span');
+                if(costDisplay) costDisplay.textContent = `$${investmentAmountTokens * investmentData.tokenPrice}`;
+            } else {
+                console.error('e.target or e.target.value is not accessible in modal input.');
+            }
+            investmentSuccessMessage = '';
+            render();
         });
-        // Prevent closing modal when clicking inside content
         const modalContentElement = modalOverlay.querySelector('.modal-content');
         if (modalContentElement) {
            modalContentElement.addEventListener('click', (e) => e.stopPropagation());
         }
-        // Close modal when clicking on overlay
         modalOverlay.addEventListener('click', closeModal);
     }
     addEventListeners();
 }
 
-function navigate(view: string) {
+function navigate(view) {
     currentView = view;
-    investmentSuccessMessage = ''; // Clear any messages when changing view
+    investmentSuccessMessage = '';
     render();
 }
 
@@ -224,7 +222,7 @@ function openInvestmentDetail() {
 
 function openModal() {
     isModalOpen = true;
-    investmentAmountTokens = 1000; // Reset to default
+    investmentAmountTokens = 1000;
     investmentSuccessMessage = '';
     render();
 }
@@ -236,22 +234,21 @@ function closeModal() {
 }
 
 function handleConfirmInvestment() {
-    // Simulate investment
     investmentSuccessMessage = `Congratulations! Your investment of ${investmentAmountTokens} tokens in ${investmentData.name} is notionally confirmed for $${investmentAmountTokens * investmentData.tokenPrice}. (This is an MVP demonstration).`;
-    render(); 
+    render();
 }
 
-function handleTabClick(e: Event) {
-    const target = e.target as HTMLElement; // Cast to HTMLElement for classList and dataset
-    if (target.classList.contains('tab-button')) {
+function handleTabClick(e) {
+    const target = e.target;
+    if (target && target.classList && target.classList.contains('tab-button')) {
         const tabId = target.dataset.tab;
         if (tabId) {
-            // Deactivate all tabs and content
-            document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-            // Activate clicked tab and content
+            const currentAppRoot = document.getElementById('app');
+            if (!currentAppRoot) return;
+            currentAppRoot.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+            currentAppRoot.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
             target.classList.add('active');
-            const activeContent = document.getElementById(tabId);
+            const activeContent = currentAppRoot.querySelector(`#${tabId}`); // Use querySelector for IDs too
             if (activeContent) {
                 activeContent.classList.add('active');
             }
@@ -261,71 +258,76 @@ function handleTabClick(e: Event) {
 
 
 function addEventListeners() {
-    if (!appRoot) return;
+    const appRoot = document.getElementById('app');
+    if (!appRoot) {
+        console.error("addEventListeners: App root not found. Listeners not attached.");
+        return;
+    }
 
-    // Sidebar navigation
-    appRoot.querySelectorAll('.sidebar-nav a[data-view]').forEach(link => {
-        link.addEventListener('click', (e) => {
+    appRoot.querySelectorAll('.sidebar-nav a[data-view]').forEach(linkElement => {
+        linkElement.addEventListener('click', (e) => {
             e.preventDefault();
-            // FIX: Cast e.currentTarget to HTMLElement to access 'dataset'
-            const view = (e.currentTarget as HTMLElement).dataset.view;
-            if (view && !link.classList.contains('disabled-link')) {
+            console.log('Sidebar link clicked. e.currentTarget:', e.currentTarget); // Logging
+            const currentLink = e.currentTarget; // Use e.currentTarget
+            if (!currentLink) {
+                console.error('Clicked sidebar link (e.currentTarget) is null or undefined.');
+                return;
+            }
+            const view = currentLink.dataset.view;
+            if (view && currentLink.classList && !currentLink.classList.contains('disabled-link')) {
                 navigate(view);
+            } else {
+                console.warn('Sidebar link click: View is undefined or link is disabled.', 'View:', view, 'Has classList:', !!currentLink.classList);
+                 if (currentLink.classList) {
+                    console.warn('Is disabled-link:', currentLink.classList.contains('disabled-link'));
+                 }
             }
         });
     });
-     // Sidebar header home link
+
     const sidebarHeaderLink = appRoot.querySelector('.sidebar-header a[data-view]');
     if(sidebarHeaderLink) {
         sidebarHeaderLink.addEventListener('click', (e) => {
             e.preventDefault();
-            // FIX: Cast e.currentTarget to HTMLElement to access 'dataset'
-            const view = (e.currentTarget as HTMLElement).dataset.view;
+            const currentLink = e.currentTarget;
+             if (!currentLink) {
+                console.error('Clicked sidebar header link (e.currentTarget) is null or undefined.');
+                return;
+            }
+            const view = currentLink.dataset.view;
             if (view) navigate(view);
         });
     }
 
-
-    // View Details button on dashboard card & card click
     appRoot.querySelectorAll('.featured-investment-card button, .featured-investment-card h3, .featured-investment-card p').forEach(el => {
          el.addEventListener('click', (e) => {
-            // FIX: Cast e.currentTarget to Element to access 'closest'
-            const card = (e.currentTarget as Element).closest('.featured-investment-card') as HTMLElement;
+            const card = e.currentTarget.closest('.featured-investment-card');
             if (card && card.dataset.investmentId === investmentData.id) {
                  openInvestmentDetail();
             }
         });
     });
+
     const featuredCard = appRoot.querySelector('.featured-investment-card');
     if(featuredCard) {
         featuredCard.addEventListener('click', (e) => {
-            // FIX: Cast e.target to Element to access 'tagName'
-            if ((e.target as Element).tagName.toLowerCase() === 'button') return;
-            // FIX: Cast featuredCard to HTMLElement to access 'dataset'
-            if ((featuredCard as HTMLElement).dataset.investmentId === investmentData.id) {
+            if (e.target.tagName.toLowerCase() === 'button') return;
+            if (featuredCard.dataset.investmentId === investmentData.id) {
                 openInvestmentDetail();
             }
         });
-        // FIX: Cast featuredCard to HTMLElement to access 'style'
-        (featuredCard as HTMLElement).style.cursor = 'pointer';
+        if (featuredCard.style) { // Check if style exists
+            featuredCard.style.cursor = 'pointer';
+        }
     }
 
-
-    // Invest Now button on detail page
     const investNowBtn = appRoot.querySelector('.btn-invest-now');
     investNowBtn?.addEventListener('click', openModal);
 
-    // Tab navigation for investment details
     const tabsContainer = appRoot.querySelector('.investment-detail-tabs');
     if (tabsContainer) {
         tabsContainer.addEventListener('click', handleTabClick);
     }
 }
 
-// Initial Render
 document.addEventListener('DOMContentLoaded', render);
-
-// Fix: Make this file a module to prevent global scope conflicts with other scripts (e.g. index.js)
-// This resolves TypeScript errors related to redeclared variables and duplicate function implementations
-// when this file and another global script (like index.js) define the same identifiers.
-export {};
